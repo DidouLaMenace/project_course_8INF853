@@ -1,4 +1,4 @@
-# ** PrixBanque Projet - Cours 8INF853**
+# PrixBanque Projet - Cours 8INF853
 
 ## **Participants du projet**
 
