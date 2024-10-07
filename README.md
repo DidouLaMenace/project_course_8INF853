@@ -31,5 +31,5 @@ Voici une représentation visuelle du storyboard que nous avons créé lors de n
 
 ## **Prototype**
 
-Le prototype que nous avons conçu lors de notre session de design sprint a été réalisé à l'aide de Figma. Vous pouvez le consulter en cliquant sur le lien suivant : [Accéder au protoype](https://www.figma.com/proto/dREpwMjmqfHkZRedR2JI6P/Prototype-8INF853?node-id=0-1&t=jwHDESuVL3NaPOKF-1)
+Le prototype que nous avons conçu lors de notre session de design sprint a été réalisé à l'aide de Figma. Vous pouvez le consulter en cliquant sur le lien suivant : [Accéder au prototype](https://www.figma.com/proto/dREpwMjmqfHkZRedR2JI6P/Prototype-8INF853?node-id=0-1&t=jwHDESuVL3NaPOKF-1)
 
