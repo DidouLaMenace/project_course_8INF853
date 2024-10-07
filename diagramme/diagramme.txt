@@ -28,6 +28,7 @@ rectangle "Facture SANS transfère de billets" as nobillettrans
 rectangle "Notifications" as notif
 rectangle "Payer facture" as Paiefact
 rectangle "Billet disponible sur le compte du client" as Billetdisp
+rectangle "En liste d'attente" as attente
 
 Client --> CreateAccount
 CreateAccount ..> InformData : <<include>>
@@ -70,6 +71,7 @@ ticket ...[#magenta]> VerifSolde : <<include>>
 ticket ...[#magenta]> event : <<include>>
 ticket ...[#magenta]> Paiementmode : <<include>>
 ticket ...[#magenta]> Disp : <<include>>
+ticket <.[#magenta]. attente : <<extend>>
 
 Createfact <..[#red]. notif : <<extend>>
 Paiefact <..[#green]. notif : <<extend>>
