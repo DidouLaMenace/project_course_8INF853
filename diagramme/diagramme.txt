@@ -29,6 +29,7 @@ rectangle "Notifications" as notif
 rectangle "Payer facture" as Paiefact
 rectangle "Billet disponible sur le compte du client" as Billetdisp
 rectangle "En liste d'attente" as attente
+rectangle "Ajouter de l'argent sur le compte PrixBanque" as ajout
 
 Client --> CreateAccount
 CreateAccount ..> InformData : <<include>>
@@ -77,5 +78,8 @@ Createfact <..[#red]. notif : <<extend>>
 Paiefact <..[#green]. notif : <<extend>>
 Factexclude <... notif : <<extend>>
 billettrans <... notif : <<extend>>
+
+Client --> ajout
+ajout ..> Paiementmode : <<include>>
 
 @enduml
