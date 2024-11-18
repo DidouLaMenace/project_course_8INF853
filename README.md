@@ -35,10 +35,11 @@ Le prototype que nous avons conçu lors de notre session de design sprint a ét�
 
 ---
 
-## **Diagramme d'utilisation**
+## ** Architecture**
 
-Nous disposons également d'une représentation du diagramme d'utilisation des exigences fonctionnelles de notre application
+L'architecture de cette application repose sur un modèle microservices, conçu pour garantir modularité, scalabilité et maintenabilité. Elle est documentée en détail dans le rapport d'architecture, accessible ici :
 
-![Storyboard](diagramme/diagramme.png)
+![Architecture](architecture/architecture.pdf)
 
+Ce document présente les choix architecturaux, les diagrammes UML, les services principaux, et la gestion de la base de données.
 ---
