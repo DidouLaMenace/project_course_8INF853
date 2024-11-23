@@ -1,0 +1,72 @@
+/* Reset des marges et padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Style global pour le body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Centrage principal */
+div {
+    text-align: center;
+}
+
+/* Style des boutons */
+button {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+/* Champs de formulaire */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Boutons primaires */
+button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+/* Boutons secondaires */
+button:not([type="submit"]) {
+    background-color: transparent;
+    color: #007BFF;
+    border: none;
+    text-decoration: underline;
+}
+
+button:not([type="submit"]):hover {
+    color: #0056b3;
+    text-decoration: none;
+}
