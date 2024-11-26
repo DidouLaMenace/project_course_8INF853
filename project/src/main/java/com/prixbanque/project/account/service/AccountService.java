@@ -1,12 +1,12 @@
-package com.prixbanque.project.service;
+package com.prixbanque.project.account.service;
 
-import com.prixbanque.project.model.Account;
-import com.prixbanque.project.repository.AccountRepository;
+import com.prixbanque.project.account.exception.AccountNotFoundException;
+import com.prixbanque.project.account.model.Account;
+import com.prixbanque.project.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AccountService {
@@ -19,7 +19,8 @@ public class AccountService {
     }
 
     public Account getAccountById(Long id) {
-        return accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found"));
+        return accountRepository.findById(id)
+                .orElseThrow(() -> new AccountNotFoundException("Account not found for ID: " + id));
     }
 
     public Account getAccountByAccountNumber(String accountNumber) {
@@ -32,18 +33,16 @@ public class AccountService {
     }
 
     public Account updateAccount(Long id, Account updatedAccount) {
-        Optional<Account> accountOptional = accountRepository.findById(id);
-        if (accountOptional.isEmpty()) {
-            throw new RuntimeException("Account not found");
-        }
-
-        Account account = accountOptional.get();
+        Account account = getAccountById(id);
         account.setAccountNumber(updatedAccount.getAccountNumber());
         account.setBalance(updatedAccount.getBalance());
         return accountRepository.save(account);
     }
 
     public void deleteAccount(Long id) {
+        if (!accountRepository.existsById(id)) {
+            throw new AccountNotFoundException("Cannot delete non-existing account with ID: " + id);
+        }
         accountRepository.deleteById(id);
     }
 }

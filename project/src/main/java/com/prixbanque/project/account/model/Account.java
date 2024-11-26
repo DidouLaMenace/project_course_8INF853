@@ -1,19 +1,16 @@
-package com.prixbanque.project.model;
+package com.prixbanque.project.account.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.math.BigDecimal;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.hibernate.validator.constraints.Length;
 
+@Document(collection = "accounts")
 @Entity
 @Table(name = "account")
 @Getter
@@ -25,11 +22,10 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    @Positive
+    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Account number cannot be blank")
     private String accountNumber;
 
-    @NotBlank
     private Double balance;
 
     @Column(nullable = false, unique = true)

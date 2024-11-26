@@ -1,11 +1,14 @@
-package com.prixbanque.project.controller;
+package com.prixbanque.project.account.controller;
 
-import com.prixbanque.project.model.Account;
-import com.prixbanque.project.service.AccountService;
+import com.prixbanque.project.account.dto.AccountDTO;
+import com.prixbanque.project.account.model.Account;
+import com.prixbanque.project.account.service.AccountService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -14,6 +17,9 @@ public class AccountController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @GetMapping
     public ResponseEntity<List<Account>> getAllAccounts() {
@@ -26,13 +32,15 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+    public ResponseEntity<Account> createAccount(@Valid @RequestBody AccountDTO accountDTO) {
+        Account account = modelMapper.map(accountDTO, Account.class);
         return ResponseEntity.ok(accountService.createAccount(account));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @RequestBody Account account) {
-        return ResponseEntity.ok(accountService.updateAccount(id, account));
+    public ResponseEntity<Account> updateAccount(@PathVariable Long id, @Valid @RequestBody AccountDTO accountDTO) {
+        Account updatedAccount = modelMapper.map(accountDTO, Account.class);
+        return ResponseEntity.ok(accountService.updateAccount(id, updatedAccount));
     }
 
     @DeleteMapping("/{id}")
