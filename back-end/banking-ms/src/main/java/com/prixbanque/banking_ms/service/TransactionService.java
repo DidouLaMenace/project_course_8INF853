@@ -1,16 +1,19 @@
 package com.prixbanque.banking_ms.service;
 
 import com.prixbanque.banking_ms.dto.TransactionDTO;
-import com.prixbanque.banking_ms.model.Account;
+import com.prixbanque.banking_ms.model.BankAccount;
 import com.prixbanque.banking_ms.model.Transaction;
-import com.prixbanque.banking_ms.repository.AccountRepository;
+import com.prixbanque.banking_ms.model.TransactionStatus;
+import com.prixbanque.banking_ms.repository.BankAccountRepository;
 import com.prixbanque.banking_ms.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -19,21 +22,15 @@ public class TransactionService {
     private TransactionRepository transactionRepository;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private BankAccountRepository bankAccountRepository;
 
     @Transactional
     public Transaction processTransaction(TransactionDTO transactionDTO) {
-        // Récupération des comptes expéditeur et destinataire
-        Account senderAccount = accountRepository.findByAccountNumber(transactionDTO.getSenderAccountNumber());
-        Account recipientAccount = accountRepository.findByAccountNumber(transactionDTO.getRecipientAccountNumber());
+        BankAccount senderAccount = bankAccountRepository.findById(transactionDTO.getSenderAccountNumber())
+                .orElseThrow(() -> new RuntimeException("Sender account not found"));
 
-        if (senderAccount == null) {
-            throw new RuntimeException("Sender account does not exist: " + transactionDTO.getSenderAccountNumber());
-        }
-
-        if (recipientAccount == null) {
-            throw new RuntimeException("Recipient account does not exist: " + transactionDTO.getRecipientAccountNumber());
-        }
+        BankAccount recipientAccount = bankAccountRepository.findById(transactionDTO.getRecipientAccountNumber())
+                .orElseThrow(() -> new RuntimeException("Recipient account not found"));
 
         // Vérification du solde du compte expéditeur
         if (senderAccount.getBalance() < transactionDTO.getAmount()) {
@@ -45,8 +42,8 @@ public class TransactionService {
         recipientAccount.setBalance(recipientAccount.getBalance() + transactionDTO.getAmount());
 
         // Sauvegarde des comptes mis à jour
-        accountRepository.save(senderAccount);
-        accountRepository.save(recipientAccount);
+        bankAccountRepository.save(senderAccount);
+        bankAccountRepository.save(recipientAccount);
 
         // Enregistrement de la transaction
         Transaction transaction = new Transaction();
@@ -54,7 +51,7 @@ public class TransactionService {
         transaction.setRecipientAccountNumber(transactionDTO.getRecipientAccountNumber());
         transaction.setAmount(transactionDTO.getAmount());
         transaction.setTransactionDate(LocalDateTime.now());
-        transaction.setStatus("SUCCESS");
+        transaction.setStatus(TransactionStatus.SUCCESS);
 
         return transactionRepository.save(transaction);
     }

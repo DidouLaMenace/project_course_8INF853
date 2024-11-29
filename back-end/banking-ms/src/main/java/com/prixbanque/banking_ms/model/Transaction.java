@@ -29,5 +29,6 @@ public class Transaction {
     private LocalDateTime transactionDate;
 
     @Column(nullable = false)
-    private String status; // e.g., SUCCESS, FAILED
+    @Enumerated(EnumType.STRING)
+    private TransactionStatus status; // e.g., SUCCESS, FAILED
 }

@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import org.hibernate.validator.constraints.Length;
-
 @Entity
 @Table(name = "account")
 @Getter
@@ -17,21 +15,12 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    @NotBlank(message = "Account number cannot be blank")
-    private String accountNumber;
-
-    private Double balance;
-
-    @Column(nullable = false, unique = true)
-    @NotBlank
-    private String email;
+    private Long userId; // de la table 'user' dans la BDD du auth-ms
 
     @NotBlank
-    @Column(nullable = false)
-    @Length(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
-    private String password;
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
 }
