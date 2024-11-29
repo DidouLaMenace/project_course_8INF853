@@ -1,4 +1,4 @@
-package com.prixbanque.project.auth.util;
+package com.prixbanque.auth_ms.util;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

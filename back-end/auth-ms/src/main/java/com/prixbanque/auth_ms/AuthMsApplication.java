@@ -1,4 +1,4 @@
-package com.prixbanque.accounts_ms;
+package com.prixbanque.auth_ms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

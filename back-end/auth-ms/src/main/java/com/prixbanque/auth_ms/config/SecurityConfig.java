@@ -1,4 +1,4 @@
-package com.prixbanque.project.auth.config;
+package com.prixbanque.auth_ms.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

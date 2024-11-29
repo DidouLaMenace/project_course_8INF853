@@ -1,10 +1,10 @@
-package com.prixbanque.project.auth.repository;
+package com.prixbanque.auth_ms.repository;
 
-import com.prixbanque.project.auth.model.User;
+import com.prixbanque.auth_ms.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByEmail(String email);
+    Optional<User> findByUsername(String username);
 }

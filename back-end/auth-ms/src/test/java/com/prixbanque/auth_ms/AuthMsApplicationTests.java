@@ -1,10 +1,10 @@
-package com.prixbanque.accounts_ms;
+package com.prixbanque.auth_ms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AccountsMsApplicationTests {
+class AuthMsApplicationTests {
 
 	@Test
 	void contextLoads() {
