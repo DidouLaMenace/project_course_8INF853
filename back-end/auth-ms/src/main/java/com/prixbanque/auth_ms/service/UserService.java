@@ -1,6 +1,5 @@
 package com.prixbanque.auth_ms.service;
 
-import com.prixbanque.auth_ms.model.Role;
 import com.prixbanque.auth_ms.model.User;
 import com.prixbanque.auth_ms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class UserService {
         User user = new User();
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(password));
-        user.setRole(Role.USER); // Par défaut
+        //user.setRole(Role.USER); // Par défaut
         return userRepository.save(user);
     }
 

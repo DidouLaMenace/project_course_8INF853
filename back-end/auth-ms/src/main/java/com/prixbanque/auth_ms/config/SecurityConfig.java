@@ -16,6 +16,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Désactiver CSRF
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/index.html", "/static/**", "/favicon.ico").permitAll() // Routes publiques
+                .requestMatchers("/auth/**").permitAll() // Autoriser toutes les routes commençant par /auth/
                 .anyRequest().authenticated() // Toutes les autres routes nécessitent une authentification
             )
             .formLogin(form -> form.disable()) // Désactiver le formulaire d'authentification par défaut

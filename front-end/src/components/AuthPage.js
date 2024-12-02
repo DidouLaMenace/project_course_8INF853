@@ -8,19 +8,42 @@ const AuthPage = () => {
         password: ''
     });
 
+    const BASE_URL = "http://localhost:8083"; // URL de la Gateway
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (isLogin) {
-            alert(`Connexion réussie pour l'utilisateur ${formData.email}`);
-        } else {
-            alert(`Inscription réussie pour l'utilisateur ${formData.username}`);
+        const endpoint = isLogin ? "/auth/login" : "/auth/register";
+        const payload = isLogin
+            ? { email: formData.email, password: formData.password }
+            : { username: formData.username, email: formData.email, password: formData.password };
+
+        try {
+            const response = await fetch(`${BASE_URL}${endpoint}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (!response.ok) {
+                throw new Error("Une erreur est survenue. Veuillez réessayer.");
+            }
+
+            const data = await response.json();
+            alert(isLogin ? "Connexion réussie !" : "Inscription réussie !");
+            console.log("Réponse serveur :", data);
+
+            setFormData({ username: '', email: '', password: '' });
+        } catch (error) {
+            console.error("Erreur :", error.message);
+            alert(error.message);
         }
-        setFormData({ username: '', email: '', password: '' });
     };
 
     return (
@@ -44,7 +67,7 @@ const AuthPage = () => {
                 )}
                 <div style={{ marginBottom: '10px' }}>
                     <label>
-                        {isLogin ? 'Email:' : 'Email:'}
+                        Email:
                         <input
                             type="email"
                             name="email"
