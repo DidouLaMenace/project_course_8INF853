@@ -11,24 +11,8 @@ import org.springframework.context.annotation.Bean;
 @org.springframework.context.annotation.Configuration
 public class Configuration {
 
-    @Autowired
-    private AuthClient authClient;
-
     @Bean
     public ModelMapper getModelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
-
-        // Custom mapping from Account to AccountDTO
-        modelMapper.addMappings(new PropertyMap<Account, AccountDTO>() {
-            @Override
-            protected void configure() {
-                map().setEmail(authClient.getEmail(source.getUserId()).getBody());
-                map().setLastName(source.getLastName());
-                map().setFirstName(source.getFirstName());
-                map().setUserId(source.getUserId());
-            }
-        });
-
-        return modelMapper;
+        return new ModelMapper();
     }
 }

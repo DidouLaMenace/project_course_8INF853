@@ -22,6 +22,11 @@ public class BankingController {
     @Autowired
     private BankAccountService bankAccountService;
 
+    @GetMapping("/ping")
+    public ResponseEntity<String> ping(){
+        return ResponseEntity.ok("Banking microservice is alive!");
+    }
+
     // Créer une transaction (virement)
     @PostMapping("/transactions/create")
     public ResponseEntity<Transaction> createTransaction(@Valid @RequestBody TransactionDTO transactionDTO) {

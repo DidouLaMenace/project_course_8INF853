@@ -12,7 +12,6 @@ import lombok.Data;
 @Table(name = "Users")
 public class User {
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 

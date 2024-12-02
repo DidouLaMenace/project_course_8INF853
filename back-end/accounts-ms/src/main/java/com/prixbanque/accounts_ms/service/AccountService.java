@@ -35,7 +35,7 @@ public class AccountService {
         // Enregistre les identifiants dans le auth-ms
         Long userId = authClient.register(email, password).getBody();
         // Créé un compte bancaire dans le banking-ms
-        String bankAccountNumber = bankingClient.createBankAccount(userId).getBody();
+        bankingClient.createBankAccount(userId).getBody();
 
         Account account = new Account(userId, firstName, lastName);
         return accountRepository.save(account);

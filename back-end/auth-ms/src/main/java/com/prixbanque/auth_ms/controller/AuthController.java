@@ -22,20 +22,20 @@ public class AuthController {
         return ResponseEntity.ok(userService.getUserById(userId).getEmail());
     }
 
-    // @PostMapping("/register")
-    // public ResponseEntity<Long> register(@RequestParam String email, @RequestParam String rawPassword) {
-    //     return ResponseEntity.ok(userService.register(email, rawPassword).getUserId());
-    // }
-
     @PostMapping("/register")
-    public ResponseEntity<Long> register(@RequestBody User user) {
-        return ResponseEntity.ok(userService.register(user.getEmail(), user.getPassword()).getUserId());
+    public ResponseEntity<Long> register(@RequestParam String email, @RequestParam String password) {
+        return ResponseEntity.ok(userService.register(email, password).getUserId());
     }
+
+    // @PostMapping("/register")
+    // public ResponseEntity<Long> register(@RequestBody User user) {
+    //     return ResponseEntity.ok(userService.register(user.getEmail(), user.getPassword()).getUserId());
+    // }
 
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String rawPassword) {
-        User user = userService.login(email, rawPassword);
+    public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
+        User user = userService.login(email, password);
         if (user == null) {
             return ResponseEntity.status(401).body("Invalid credentials");
         }

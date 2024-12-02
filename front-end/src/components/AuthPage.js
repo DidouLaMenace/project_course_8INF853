@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true); // Gère l'état : Connexion ou Inscription
     const [formData, setFormData] = useState({
-        username: '',
+        firstName: '',
+        lastName : '',
         email: '',
         password: ''
     });
@@ -17,53 +18,90 @@ const AuthPage = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const endpoint = isLogin ? "/auth/login" : "/auth/register";
+    
+        const endpoint = isLogin ? "/auth/auth/login" : "/accounts/create";
         const payload = isLogin
-            ? { email: formData.email, password: formData.password }
-            : { username: formData.username, email: formData.email, password: formData.password };
-
+            ? {
+                  email: formData.email,
+                  password: formData.password,
+              }
+            : {
+                  email: formData.email,
+                  password: formData.password,
+                  firstName: formData.firstName,
+                  lastName: formData.lastName,
+              };
+    
         try {
-            const response = await fetch(`${BASE_URL}${endpoint}`, {
+            const requestOptions = {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    "Content-Type": "application/x-www-form-urlencoded",
                 },
-                body: JSON.stringify(payload),
-            });
-
+                body: new URLSearchParams(payload),
+            };
+    
+            const response = await fetch(`${BASE_URL}${endpoint}`, requestOptions);
+    
             if (!response.ok) {
-                throw new Error("Une erreur est survenue. Veuillez réessayer.");
+                // Récupérer le message d'erreur (texte ou JSON)
+                const errorMessage = await response.text();
+                throw new Error(errorMessage || "Une erreur est survenue.");
             }
-
-            const data = await response.json();
+    
+            // Déterminez si la réponse est JSON ou texte
+            const contentType = response.headers.get("Content-Type");
+            const data = contentType && contentType.includes("application/json")
+                ? await response.json()
+                : await response.text();
+    
             alert(isLogin ? "Connexion réussie !" : "Inscription réussie !");
             console.log("Réponse serveur :", data);
-
-            setFormData({ username: '', email: '', password: '' });
+    
+            // Réinitialisez les champs du formulaire après la soumission
+            setFormData({ firstName: '', lastName: '', email: '', password: '' });
         } catch (error) {
             console.error("Erreur :", error.message);
             alert(error.message);
         }
     };
+    
+    
 
     return (
         <div style={{ maxWidth: '400px', margin: 'auto', padding: '20px', textAlign: 'center' }}>
             <h1>{isLogin ? 'Connexion' : 'Inscription'}</h1>
             <form onSubmit={handleSubmit}>
                 {!isLogin && (
-                    <div style={{ marginBottom: '10px' }}>
-                        <label>
-                            Nom d'utilisateur:
-                            <input
-                                type="text"
-                                name="username"
-                                value={formData.username}
-                                onChange={handleInputChange}
-                                required
-                                style={{ width: '100%', padding: '8px', marginTop: '5px' }}
-                            />
-                        </label>
-                    </div>
+                    <>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>
+                                Prénom:
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleInputChange}
+                                    required
+                                    style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                                />
+                            </label>
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>
+                            <label>
+                                Nom:
+                                <input
+                                    type="text"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleInputChange}
+                                    required
+                                    style={{ width: '100%', padding: '8px', marginTop: '5px' }}
+                                />
+                            </label>
+
+                        </div>
+                    </>
                 )}
                 <div style={{ marginBottom: '10px' }}>
                     <label>

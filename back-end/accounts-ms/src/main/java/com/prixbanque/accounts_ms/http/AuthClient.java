@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "auth")
 public interface AuthClient {
 
-    @PostMapping("/register")
+    @PostMapping("auth/register")
     ResponseEntity<Long> register(@RequestParam String email, @RequestParam String password);
 
-    @GetMapping("/getEmail")
+    @GetMapping("auth/getEmail")
     ResponseEntity<String> getEmail(@RequestParam Long userId);
 }

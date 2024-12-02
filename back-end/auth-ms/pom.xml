@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.prixbanque</groupId>
-	<artifactId>accounts-ms</artifactId>
+	<artifactId>auth-ms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>accounts-ms</name>
-	<description>Microservice de gestion des comptes utilisateurs</description>
+	<description>Microservice d'authentification</description>
 	<url/>
 	<licenses>
 		<license/>
