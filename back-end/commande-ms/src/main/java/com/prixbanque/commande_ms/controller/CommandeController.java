@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/commande")
+@RequestMapping
 @RequiredArgsConstructor
 public class CommandeController {
 

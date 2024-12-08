@@ -1,11 +1,11 @@
 import React from 'react'
-import HeaderUser from '../../Components/HeaderUser'
+import Header from '../../Components/Header'
 import Footer from '../../Components/Footer'
 
 function Dashboard() {
   return (
     <>
-    <HeaderUser/>
+    <Header/>
     <div className='dashbaordhero'>
         <h1 className='text-center pt-5 pb-2'>Bonjour Mr/Mme Example Example</h1>
     </div>

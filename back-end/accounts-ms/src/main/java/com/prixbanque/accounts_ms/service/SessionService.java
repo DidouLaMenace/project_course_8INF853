@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class SessionService {
@@ -15,9 +16,9 @@ public class SessionService {
     @Autowired
     private SessionRepository sessionRepository;
 
-    public boolean validateSession(String sessionId, Long userId) {
+    public boolean validateSession(String sessionId) {
         return sessionRepository.findById(sessionId)
-                .filter(session -> session.getUserId().equals(userId))
+//                .filter(session -> session.getUserId().equals(userId))
                 .filter(session -> session.getExpirationDate().isAfter(LocalDateTime.now()))
                 .filter(session -> session.getActive().equals(true))
                 .isPresent();
@@ -34,5 +35,14 @@ public class SessionService {
 
     public void logout(String sessionId) {
         sessionRepository.deleteById(sessionId);
+    }
+
+    public Optional<Long> getUserIdBySessionId(String sessionId) {
+        Optional<Session> s = sessionRepository.findById(sessionId);
+        if (s.isPresent()) {
+            return Optional.of(s.get().getUserId());
+        } else {
+            return Optional.empty();
+        }
     }
 }

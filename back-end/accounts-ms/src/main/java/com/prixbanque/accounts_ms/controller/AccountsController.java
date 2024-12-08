@@ -49,18 +49,19 @@ public class AccountsController {
         return ResponseEntity.noContent().build();
     }
 
+    // valide la session et renvoie le userId de l'utilisateur connecté si la session est valide
     @GetMapping("/session/validate")
-    public ResponseEntity<String> validateSession(@RequestParam String sessionId, @RequestParam long userId) {
-        if (sessionService.validateSession(sessionId, userId)) {
-            return ResponseEntity.ok("Session is valid");
+    public ResponseEntity<Long> validateSession(@RequestParam String sessionId) {
+        if (sessionService.validateSession(sessionId)) {
+            return ResponseEntity.ok(sessionService.getUserIdBySessionId(sessionId).get());
         } else {
-            return ResponseEntity.status(401).body("Session invalide");
+            return ResponseEntity.status(401).body(null);
         }
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<AccountDTO> getAccountById(@RequestHeader("Session-Id") String sessionId, @PathVariable Long userId) {
-        if (!sessionService.validateSession(sessionId, userId)) {
+        if (!sessionService.validateSession(sessionId)) {
             return ResponseEntity.status(401).body(null);
         }
 

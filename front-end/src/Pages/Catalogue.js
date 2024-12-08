@@ -18,33 +18,33 @@ function Catalogue() {
               {/*FILTRES*/}
               <div className='col-3'>
                 <div className='container d-flex flex-column justify-content-center align-items-center'>
-                  <div class="input-group mt-2 mb-3">
-                    <input type="text" class="form-control" placeholder="SAISIR CE QUE TU VEUX" aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                    <span class="input-group-text" id="basic-addon2">CHERCHER</span>
+                  <div className="input-group mt-2 mb-3">
+                    <input type="text" className="form-control" placeholder="SAISIR CE QUE TU VEUX" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                    <span className="input-group-text" id="basic-addon2">CHERCHER</span>
                   </div>
-                  <select class="form-select mb-3" aria-label="Default select example">
+                  <select className="form-select mb-3" aria-label="Default select example">
                     <option selected>Sélection de la choix 1</option>
                     <option value="1">Choix 1.1</option>
                     <option value="2">Choix 1.1</option>
                     <option value="3">Choix 1.1</option>
                   </select>
-                  <select class="form-select mb-3" aria-label="Default select example">
+                  <select className="form-select mb-3" aria-label="Default select example">
                     <option selected>Sélection de la choix 2</option>
                     <option value="1">Choix 2.1</option>
                     <option value="2">Choix 2.1</option>
                     <option value="3">Choix 2.1</option>
                   </select>
-                  <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                    <label class="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
+                  <div className="form-check form-switch mb-3">
+                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+                    <label className="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
                   </div>
-                  <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                    <label class="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
+                  <div className="form-check form-switch mb-3">
+                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+                    <label className="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
                   </div>
-                  <div class="form-check form-switch mb-3">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                    <label class="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
+                  <div className="form-check form-switch mb-3">
+                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
+                    <label className="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
                   </div>
                 </div>
               </div>
