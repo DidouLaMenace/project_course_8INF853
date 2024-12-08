@@ -1,8 +1,8 @@
 package com.prixbanque.accounts_ms.controller;
 
 import com.prixbanque.accounts_ms.dto.AccountDTO;
-import com.prixbanque.accounts_ms.http.AuthClient;
 import com.prixbanque.accounts_ms.model.Account;
+import com.prixbanque.accounts_ms.service.SessionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +16,56 @@ public class AccountsController {
     @Autowired
     private AccountService accountService;
     @Autowired
-    private ModelMapper modelMapper;
+    private SessionService sessionService;
     @Autowired
-    private AuthClient authClient;
+    private ModelMapper modelMapper;
+
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
         return ResponseEntity.ok("Account microservice is alive!");
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<AccountDTO> createAccount(@RequestParam String email, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName) {
-        Account newAccount = accountService.createAccount(email, password, firstName, lastName);
+    @PostMapping("/register")
+    public ResponseEntity<AccountDTO> register(@RequestParam String email, @RequestParam String password, @RequestParam String firstName, @RequestParam String lastName) {
+        Account newAccount = accountService.register(email, password, firstName, lastName);
         AccountDTO dto = modelMapper.map(newAccount, AccountDTO.class);
-        dto.setEmail(authClient.getEmail(dto.getUserId()).getBody());
         return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
+        try {
+            String sessionId = accountService.login(email, password);
+            return ResponseEntity.ok(sessionId);
+        } catch (Exception e) {
+            return ResponseEntity.status(401).body("Identifiants invalides");
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Session-Id") String sessionId) {
+        sessionService.logout(sessionId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/session/validate")
+    public ResponseEntity<String> validateSession(@RequestParam String sessionId, @RequestParam long userId) {
+        if (sessionService.validateSession(sessionId, userId)) {
+            return ResponseEntity.ok("Session is valid");
+        } else {
+            return ResponseEntity.status(401).body("Session invalide");
+        }
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<AccountDTO> getAccountById(@RequestHeader("Session-Id") String sessionId, @PathVariable Long userId) {
+        if (!sessionService.validateSession(sessionId, userId)) {
+            return ResponseEntity.status(401).body(null);
+        }
+
+        Account account = accountService.getAccountById(userId);
+        if (account == null) return ResponseEntity.status(404).body(null);
+        else return ResponseEntity.ok(modelMapper.map(account, AccountDTO.class));
     }
 }
