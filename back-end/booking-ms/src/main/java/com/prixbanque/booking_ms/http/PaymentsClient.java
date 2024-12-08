@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "payments", url = "http://localhost:8082/payments")
+@FeignClient(name = "payments", url = "http://localhost:8083/payments")
 public interface PaymentsClient {
 
     @PostMapping("/process")
