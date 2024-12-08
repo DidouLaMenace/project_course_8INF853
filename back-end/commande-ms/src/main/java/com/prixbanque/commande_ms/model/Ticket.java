@@ -15,7 +15,6 @@ public class Ticket {
 
     private String eventName;
     private String eventDate;
-    private String seatNumber;
     private Double price;
 
     @ManyToOne

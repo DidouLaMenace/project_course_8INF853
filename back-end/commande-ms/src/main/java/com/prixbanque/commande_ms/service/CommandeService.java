@@ -31,8 +31,8 @@ public class CommandeService {
 
     public byte[] generateTicketQRCode(Ticket ticket) {
         try {
-            String qrText = String.format("Event: %s\nDate: %s\nSeat: %s\nPrice: %.2f",
-                    ticket.getEventName(), ticket.getEventDate(), ticket.getSeatNumber(), ticket.getPrice());
+            String qrText = String.format("Event: %s\nDate: %s\n: %s\nPrice: %.2f",
+                    ticket.getEventName(), ticket.getEventDate(), ticket.getPrice());
             return QRCodeUtils.generateQRCode(qrText);
         } catch (WriterException | IOException e) {
             throw new RuntimeException("Failed to generate QR code", e);

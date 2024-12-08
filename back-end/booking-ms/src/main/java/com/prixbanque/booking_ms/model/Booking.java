@@ -1,31 +1,27 @@
 package com.prixbanque.booking_ms.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.LocalDateTime;
-
-
-// Panier finalisé
+import java.math.BigDecimal;
 
 @Entity
-@Data
+@Table(name = "bookings")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long userId;
+
     private Long eventId;
-    private String seats;  // Voir pour plus tard
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    private LocalDateTime createdAt;
-    private LocalDateTime expiresAt;
+    private BigDecimal totalAmount; // Champ ajouté
 }

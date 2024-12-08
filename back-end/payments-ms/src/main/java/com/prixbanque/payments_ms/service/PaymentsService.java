@@ -1,52 +1,41 @@
 package com.prixbanque.payments_ms.service;
 
-import com.prixbanque.payments_ms.dto.PaymentsDTO;
+import com.prixbanque.payments_ms.http.BookingClient;
 import com.prixbanque.payments_ms.model.Payments;
 import com.prixbanque.payments_ms.model.Status;
 import com.prixbanque.payments_ms.repository.PaymentsRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentsService {
-    @Autowired
-    private PaymentsRepository repository;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final BookingClient bookingClient;
+    private final PaymentsRepository paymentsRepository;
 
-    public Page<PaymentsDTO> getAll(Pageable pagination) {
-        return repository
-                .findAll(pagination)
-                .map(p -> modelMapper.map(p, PaymentsDTO.class));
-    }
+    public ResponseEntity<String> processPayment(Long cartId) {
+        // Appel au client Booking pour récupérer le montant total du panier
+        ResponseEntity<Double> cartResponse = bookingClient.getCartTotal(cartId);
 
-    public PaymentsDTO getById(Long id) {
-        Payments payments = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Payments not found"));
-        return modelMapper.map(payments, PaymentsDTO.class);
-    }
+        if (cartResponse.getBody() == null) {
+            throw new IllegalArgumentException("Le montant total du panier est null");
+        }
 
-    public PaymentsDTO save(PaymentsDTO paymentsDTO) {
-        Payments payments = modelMapper.map(paymentsDTO, Payments.class);
-        payments.setStatus(Status.CREATED);
-        repository.save(payments);
+        // Conversion de Double en BigDecimal
+        BigDecimal totalAmount = BigDecimal.valueOf(cartResponse.getBody());
 
-        return modelMapper.map(payments, PaymentsDTO.class);
-    }
+        // Logique de paiement ici (par exemple, interaction avec un système de paiement)
 
-    public PaymentsDTO update(Long id, PaymentsDTO paymentsDTO) {
-        Payments payments = modelMapper.map(paymentsDTO, Payments.class);
-        payments.setId(id);
-        payments = repository.save(payments);
-        return modelMapper.map(payments, PaymentsDTO.class);
-    }
+        // Sauvegarde du paiement dans la base de données
+        Payments payment = new Payments();
+        payment.setCartId(cartId);
+        payment.setAmount(totalAmount);
+        payment.setStatus(Status.CONFIRMED);
+        paymentsRepository.save(payment);
 
-    public void delete(Long id) {
-        repository.deleteById(id);
+        return ResponseEntity.ok("Paiement effectué avec succès");
     }
 }

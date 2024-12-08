@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Payments {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,4 +49,8 @@ public class Payments {
 
     @NotNull
     private Long orderId;
+
+    // Nouvelle propriété cartId
+    @NotNull
+    private Long cartId; // Correspond à l'ID du panier lié au paiement
 }

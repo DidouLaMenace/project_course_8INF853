@@ -17,4 +17,5 @@ public class PaymentsDTO {
     private String code;
     private Status status;
     private Long orderId;
+    private Long userId;
 }
