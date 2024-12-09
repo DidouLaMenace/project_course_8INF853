@@ -57,4 +57,10 @@ public class BankingController {
         return ResponseEntity.ok(balance);
     }
 
+    @PutMapping("/update-balance")
+    public ResponseEntity<String> updateBalance(@RequestParam Long userId, @RequestParam Double newBalance) {
+        bankAccountService.updateBalance(userId, newBalance);
+        return ResponseEntity.ok("Solde mis à jour avec succès.");
+    }
+
 }

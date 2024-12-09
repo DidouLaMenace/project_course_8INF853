@@ -36,4 +36,10 @@ public class BankAccountService {
         return bankAccount.getBalance();
     }
 
+    public void updateBalance(Long userId, Double newBalance) {
+        BankAccount account = bankAccountRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Compte bancaire non trouvé pour l'utilisateur ID : " + userId));
+        account.setBalance(newBalance);
+        bankAccountRepository.save(account);
+    }
 }

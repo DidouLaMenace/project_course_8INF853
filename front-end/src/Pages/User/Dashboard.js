@@ -3,6 +3,7 @@ import Header from '../../Components/Header';
 import Footer from '../../Components/Footer';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
     const [userId, setUserId] = useState(null);
@@ -10,6 +11,7 @@ function Dashboard() {
     const [balance, setBalance] = useState(null);
     const [reservations, setReservations] = useState([]);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const API_BASE_URL = 'http://localhost:8083'; // URL de la Gateway
 
@@ -106,18 +108,26 @@ function Dashboard() {
                 <h3 className='text-center color-primary mb-2'>
                     {balance !== null ? `${balance} €` : 'Chargement...'}
                 </h3>
+                <div className="text-center mt-3">
+                    <button
+                        className="btn btn-success"
+                        onClick={() => navigate('/add-money')}
+                    >
+                        Ajouter de l'argent sur mon compte
+                    </button>
+                </div>
             </div>
             <div className='dashboardhistory pt-4'>
                 <div className='container'>
                     <div className='row'>
-                        <h4 className='text-center'>Listes des réservations</h4>
+                        <h4 className='text-center'>Liste des réservations</h4>
                     </div>
                     <div className='row'>
                         <table className='table'>
                             <thead>
                             <tr>
                                 <th scope='col'>#</th>
-                                <th scope='col'>Nom de spéctacle</th>
+                                <th scope='col'>Nom de spectacle</th>
                                 <th scope='col'>Date</th>
                                 <th scope='col'>Prix</th>
                                 <th scope='col'>Modifier</th>

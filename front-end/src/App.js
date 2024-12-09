@@ -7,7 +7,7 @@ import Catalogue from './Pages/Catalogue';
 import Reservation from './Pages/Reservation';
 import Dashboard from './Pages/User/Dashboard';
 import Payment from './Pages/Payment';
-import AuthRequired from "./Pages/AuthRequired";
+import AddMoney from "./Pages/User/AddMoney";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Route path='/reservation/:id' element={<Reservation />} />
         <Route path='/dashboard' element={<Dashboard />} />
         <Route path="/payment/:id" element={<Payment />} />
-        <Route path="/authrequired" element={<AuthRequired />} />
+        <Route path="/add-money" element={<AddMoney />} />
       </Routes>
     </BrowserRouter>
   );

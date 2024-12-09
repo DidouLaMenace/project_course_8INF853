@@ -3,14 +3,37 @@ import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const Payment = () => {
     const { id } = useParams(); // Récupérer l'ID de l'événement depuis l'URL
     const navigate = useNavigate();
     const [event, setEvent] = useState(null);
     const [ticketQuantity, setTicketQuantity] = useState(1); // Par défaut, 1 place
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const API_BASE_URL = 'http://localhost:8083'; // URL de la Gateway
+
+    useEffect(() => {
+        const sessionId = Cookies.get('session-id');
+        if (!sessionId) {
+            setIsLoggedIn(false);
+            return;
+        }
+
+        const checkSession = async () => {
+            try {
+                const response = await axios.get(`${API_BASE_URL}/accounts/session/validate?sessionId=${sessionId}`);
+                setIsLoggedIn(response.status === 200); // Si la session est valide
+            } catch (err) {
+                setIsLoggedIn(false); // Si une erreur se produit
+            }
+        };
+
+        checkSession();
+    }, []);
 
     // Charger les informations de l'événement
     useEffect(() => {
@@ -35,27 +58,40 @@ const Payment = () => {
     // Gestion du paiement avec le compte
     const handlePayWithAccount = async () => {
         try {
-            const paymentPayload = {
-                eventId: id,
-                ticketQuantity,
-                totalAmount: event.ticketPrice * ticketQuantity,
-            };
+            const totalAmount = event.ticketPrice * ticketQuantity;
 
-            const response = await axios.post(`${API_BASE_URL}/payments/process`, paymentPayload, {
-                withCredentials: true, // Inclure les cookies de session
+            // Étape 1: Vérifier le solde via le microservice banking
+            const sessionId = Cookies.get('session-id'); // Récupérer la session de l'utilisateur
+            const balanceResponse = await axios.get(`${API_BASE_URL}/banking/balance`, {
+                params: { userId },
+                headers: { 'Session-Id': sessionId },
             });
 
-            if (response.status === 200) {
-                alert('Paiement réussi avec votre compte !');
-                navigate('/success'); // Rediriger après le paiement
-            } else {
-                alert('Échec du paiement.');
+            const balance = balanceResponse.data; // Le solde récupéré
+            console.log('Solde utilisateur :', balance);
+
+            if (balance < totalAmount) {
+                alert('Votre solde est insuffisant pour effectuer ce paiement.');
+                return; // Arrêtez ici si le solde est insuffisant
             }
+
+            // Étape 2: Si le solde est suffisant, mettez à jour localement et affichez une alerte
+            const newBalance = balance - totalAmount;
+
+            // Mettre à jour le solde dans la base de données via le microservice banking
+            await axios.put(`${API_BASE_URL}/banking/update-balance`, {
+                userId,
+                newBalance,
+            });
+
+            alert(`Paiement réussi avec votre compte ! Nouveau solde : ${newBalance.toFixed(2)} €`);
+            setBalance(newBalance); // Mettre à jour le solde localement
         } catch (error) {
             console.error('Erreur lors du traitement du paiement :', error);
             alert('Une erreur est survenue lors du paiement.');
         }
     };
+
 
     if (!event) {
         return (
@@ -97,18 +133,25 @@ const Payment = () => {
                         <div className="card">
                             <div className="card-body">
                                 <h5 className="card-title">Options de paiement</h5>
-                                <button
-                                    onClick={handlePayWithAccount}
-                                    className="btn btn-success w-100 mb-3"
-                                >
-                                    Payer avec mon compte
-                                </button>
+                                {isLoggedIn ? (
+                                    <button onClick={handlePayWithAccount} className="btn btn-success w-100 mb-3">Payer avec mon
+                                        compte</button>
+                                ) : (
+                                    <div>
+                                        <p className="text-danger d-inline">Veuillez vous connecter pour payer avec
+                                            votre compte.</p>
+                                        <button onClick={() => navigate('/login')}
+                                                className="btn btn-primary btn-sm ms-2">
+                                            Se connecter
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </>
     );
 };
