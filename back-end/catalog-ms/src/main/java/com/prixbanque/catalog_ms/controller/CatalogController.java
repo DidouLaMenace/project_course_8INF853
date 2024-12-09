@@ -5,6 +5,9 @@ import com.prixbanque.catalog_ms.model.EventCategory;
 import com.prixbanque.catalog_ms.service.CatalogService;
 import jakarta.persistence.OptimisticLockException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,20 +29,20 @@ public class CatalogController {
     // endpoint pour récupérer les events à venir
     // permet de filtrer par catégorie si un categoryId est fourni
     @GetMapping("/events")
-    public ResponseEntity<List<Event>> getAllIncomingEvents(@RequestParam(required = false) Long categoryId) {
-        if (categoryId != null) {
-            return ResponseEntity.ok(catalogService.getEventsByCategoryId(categoryId));
-        }
-        return ResponseEntity.ok(catalogService.getAllIncomingEvents());
-    }
+    public ResponseEntity<Page<Event>> getEvents(
+            @PageableDefault(size=10) Pageable pageable,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) String searchText) {
 
+        Page<Event> eventsPage = catalogService.getIncomingEvents(pageable, categoryId, searchText);
+        return ResponseEntity.ok(eventsPage);
+    }
 
     // endpoint pour récupérer les catégories
     @GetMapping("/categories")
     public ResponseEntity<List<EventCategory>> getAllCategories() {
         return ResponseEntity.ok(catalogService.getAllEventCategories());
     }
-
 
     // endpoint pour récupérer un event par id
     @GetMapping("/events/{id}")

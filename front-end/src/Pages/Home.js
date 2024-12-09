@@ -1,14 +1,28 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Footer from '../Components/Footer'
 import Header from '../Components/Header'
 import '../App.css'
 import { useNavigate } from 'react-router-dom'
-
+import EventCard from '../Components/EventCard';
 
 function Home() {
+    const [events, setEvents] = useState([]);
     const navigate = useNavigate();
 
-    const handleSeeEventsClick = () => {navigate("/catalogue")}
+    useEffect(() => {
+        // Effectuer la requête pour récupérer les prochains événements
+        fetch('http://localhost:8083/catalog/events?page=0&size=3')
+            .then(response => response.json())
+            .then(data => {
+                // Mettre à jour le state avec les événements récupérés
+                setEvents(data.content);
+            })
+            .catch(error => console.error('Erreur lors de la récupération des événements :', error));
+    }, []);
+
+    const handleSeeEventsClick = () => {
+        navigate("/catalogue")
+    }
 
     return (
         <div>
@@ -24,52 +38,35 @@ function Home() {
                 </div>
             </div>
             {/*HERO SECTION FINISH*/}
-            {/*LES DERNIERS SPECTACELS BEGIN*/}
+
+            {/*LES DERNIERS SPECTACLES BEGIN*/}
             <div className='latestshows py-5'>
                 <div className='container'>
                     <div className='row'>
                         <div className='col'>
-                            <h5>Les derniers spéctacles</h5>
+                            <h5>Les évenements à venir</h5>
                         </div>
                         <div className='col text-end'>
                             <a href='/catalogue'>Voir tout</a>
                         </div>
                     </div>
                     <div className='row pt-3'>
-                        <div className='col-sm'>
-                            <div className="card">
-                                <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Nom de spéctacle</h5>
-                                    <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                                    <a href="#" className="btn btn-primary">Réserver</a>
+                        {events.length > 0 ? (
+                            events.map(event => (
+                                <div className='col-sm' key={event.event_id}>
+                                    <EventCard event={event} />
                                 </div>
+                            ))
+                        ) : (
+                            <div className="col-sm">
+                                <p>Chargement des événements...</p>
                             </div>
-                        </div>
-                        <div className='col-sm'>
-                            <div className="card">
-                                <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Nom de spéctacle</h5>
-                                    <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                                    <a href="#" className="btn btn-primary">Réserver</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='col-sm'>
-                            <div className="card">
-                                <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                                <div className="card-body">
-                                    <h5 className="card-title">Nom de spéctacle</h5>
-                                    <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                                    <a href="#" className="btn btn-primary">Réserver</a>
-                                </div>
-                            </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>
-            {/*LES DERNIERS SPECTACELS BEGIN*/}
+            {/*LES DERNIERS SPECTACLES FINISH*/}
+
             <Footer />
         </div>
     )
