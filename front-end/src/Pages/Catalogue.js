@@ -3,6 +3,7 @@ import axios from 'axios';
 import EventCard from '../Components/EventCard';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
+
 const CataloguePage = () => {
   const [searchText, setSearchText] = useState('');
   const [categoryId, setCategoryId] = useState('');

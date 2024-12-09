@@ -62,6 +62,9 @@ function Register() {
             // Enregistrement du session-id dans un cookie
             Cookies.set('session-id', loginResponse.data, { expires: 1 });
 
+            // Enregistrement du session-id dans le localStorage
+            localStorage.setItem('session-id', loginResponse.data);
+
             // Redirection vers la page catalogue
             navigate('/catalogue');
         } catch (error) {

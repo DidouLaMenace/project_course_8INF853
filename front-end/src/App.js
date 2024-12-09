@@ -6,6 +6,8 @@ import Register from './Pages/Register';
 import Catalogue from './Pages/Catalogue';
 import Reservation from './Pages/Reservation';
 import Dashboard from './Pages/User/Dashboard';
+import Payment from './Pages/Payment';
+import AuthRequired from "./Pages/AuthRequired";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path='/catalogue' element={<Catalogue />} />
         <Route path='/reservation/:id' element={<Reservation />} />
         <Route path='/dashboard' element={<Dashboard />} />
+        <Route path="/payment/:id" element={<Payment />} />
+        <Route path="/authrequired" element={<AuthRequired />} />
       </Routes>
     </BrowserRouter>
   );

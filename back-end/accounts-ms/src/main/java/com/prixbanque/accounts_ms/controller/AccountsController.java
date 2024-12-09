@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.prixbanque.accounts_ms.service.AccountService;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.http.HttpStatus;
+
 
 @RestController
 @RequestMapping
@@ -69,4 +72,21 @@ public class AccountsController {
         if (account == null) return ResponseEntity.status(404).body(null);
         else return ResponseEntity.ok(modelMapper.map(account, AccountDTO.class));
     }
+
+    @GetMapping("/{userId}/firstname")
+    public ResponseEntity<String> getFirstName(@PathVariable Long userId) {
+
+        String firstName = accountService.getFirstNameById(userId);
+
+        return ResponseEntity.ok(firstName);
+    }
+
+
+//    @GetMapping("/check-session")
+//    public ResponseEntity<Void> checkSession(HttpSession session) {
+//        if (session.getAttribute("user") != null) {
+//            return ResponseEntity.ok().build(); // Session active
+//        }
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Pas de session active
+//    }
 }

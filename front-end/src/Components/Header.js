@@ -26,6 +26,8 @@ function Header() {
         // Supprimer le cookie session-id
         Cookies.remove('session-id');
 
+        localStorage.removeItem('sessionId');
+
         // Si l'utilisateur est déjà sur la page d'accueil, on recharge la page
         if (window.location.pathname === '/') {
           window.location.reload();  // Recharger la page d 'accueil

@@ -68,4 +68,11 @@ public class AccountService {
         return accountRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+    public String getFirstNameById(Long userId) {
+        Account account = accountRepository.findById(userId)
+                .orElseThrow(() -> new AccountNotFoundException("Utilisateur avec l'ID " + userId + " introuvable"));
+        return account.getFirstName();
+    }
+
 }

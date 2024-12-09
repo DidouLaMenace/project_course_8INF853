@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.prixbanque</groupId>
-	<artifactId>accounts-ms</artifactId>
+	<artifactId>commande-ms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>accounts-ms</name>
-	<description>Microservice de gestion des comptes utilisateurs</description>
+	<name>inventory-ms</name>
+	<description>Microservice d'Inventaire des achats</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -31,13 +31,6 @@
 		<spring-cloud.version>2024.0.0-RC1</spring-cloud.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-			<version>5.0.0</version>
-			<scope>provided</scope>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -62,10 +55,6 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-openfeign</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -89,11 +78,19 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.modelmapper</groupId>
-    		<artifactId>modelmapper</artifactId>
-    		<version>3.1.1</version> <!-- Vérifie la dernière version disponible -->
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.5.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.5.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
