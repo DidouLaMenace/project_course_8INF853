@@ -47,7 +47,14 @@ public class BankingController {
     }
 
     @PostMapping("/accounts/create")
-    public ResponseEntity<String> createBankAccount(@RequestParam Long ownerUserId) {
-        return ResponseEntity.ok(bankAccountService.createBankAccount(ownerUserId).getBankAccountNumber());
+    public ResponseEntity<String> createBankAccount(@RequestParam Long userId) {
+        return ResponseEntity.ok(bankAccountService.createBankAccount(userId).getBankAccountNumber());
     }
+
+    @GetMapping("/balance")
+    public ResponseEntity<Double> getBalance(@RequestParam Long userId) {
+        Double balance = bankAccountService.getBalanceByUserId(userId);
+        return ResponseEntity.ok(balance);
+    }
+
 }

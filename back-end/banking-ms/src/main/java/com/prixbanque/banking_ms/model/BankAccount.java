@@ -36,7 +36,7 @@ public class BankAccount {
     }
 
     @Column(nullable = false)
-    private Long ownerUserId;
+    private Long userId;
 
     @Column(nullable = false)
     private Double balance;

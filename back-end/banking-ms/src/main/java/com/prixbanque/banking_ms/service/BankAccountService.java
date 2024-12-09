@@ -18,9 +18,9 @@ public class BankAccountService {
      * @param ownerUserId l'id de l'utilisateur associé au compte dans account-ms
      * @return le numéro du compte créé
      */
-    public BankAccount createBankAccount(Long ownerUserId) {
+    public BankAccount createBankAccount(Long userId) {
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setOwnerUserId(ownerUserId);
+        bankAccount.setUserId(userId);
         bankAccount.setBalance(0d);
         return bankAccountRepository.save(bankAccount);
     }
@@ -28,4 +28,12 @@ public class BankAccountService {
     public Optional<BankAccount> getBankAccountByBankAccountNumber(String bankAccountNumber) {
         return bankAccountRepository.findById(bankAccountNumber);
     }
+
+    public Double getBalanceByUserId(Long userId) {
+        // Récupérer le compte bancaire associé à l'utilisateur
+        BankAccount bankAccount = bankAccountRepository.findByUserId(userId)
+                .orElseThrow(() -> new RuntimeException("Compte bancaire non trouvé pour l'utilisateur ID: " + userId));
+        return bankAccount.getBalance();
+    }
+
 }

@@ -36,22 +36,27 @@ function Dashboard() {
 
     // Récupérer le solde
     useEffect(() => {
-        if (!userId) return;
+        const sessionId = Cookies.get('session-id');
+        if (!sessionId) {
+            setError('Utilisateur non connecté');
+            return;
+        }
 
         const fetchBalance = async () => {
             try {
-                const response = await axios.get(`${API_BASE_URL}/bank/balance`, {
+                const response = await axios.get(`${API_BASE_URL}/banking/balance`, {
                     params: { userId },
                 });
-                setBalance(response.data.balance);
+                setBalance(response.data); // Directement la valeur retournée (Double)
             } catch (err) {
                 console.error('Erreur lors de la récupération du solde :', err);
-                setBalance(null);
+                setBalance(null); // En cas d'erreur, définissez le solde à null
             }
         };
 
         fetchBalance();
     }, [userId]);
+
 
     // Récupérer les réservations
     useEffect(() => {
@@ -62,19 +67,6 @@ function Dashboard() {
             return;
         }
 
-        const fetchUserData = async () => {
-            try {
-                // Valider la session pour obtenir l'ID utilisateur
-                const sessionResponse = await axios.get(`${API_BASE_URL}/accounts/session/validate?sessionId=${sessionId}`);
-                const userId = sessionResponse.data;
-                setUserId(userId);
-            } catch (err) {
-                console.error('Erreur lors de la récupération des informations utilisateur :', err);
-                setError('Erreur de session');
-            }
-        };
-        fetchUserData();
-
         const fetchUserName = async () => {
             try {
                 const userResponse = await axios.get(`${API_BASE_URL}/accounts/${userId}/firstname`);
@@ -84,7 +76,6 @@ function Dashboard() {
                 setUserName("Utilisateur"); // Valeur par défaut en cas d'erreur
             }
         };
-
         fetchUserName();
 
         const fetchReservations = async () => {
