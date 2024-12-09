@@ -100,7 +100,6 @@ function Dashboard() {
                 <h1 className='text-center pt-5 pb-2'>
                     Bonjour {userName || 'Utilisateur'} {/* Affiche le nom de l'utilisateur */}
                 </h1>
-                <h5 className='text-center'>Votre ID : {userId || 'Chargement...'}</h5>
             </div>
             <div className='dashboardsolde pt-4'>
                 <h3 className='text-center mb-2'>Votre solde :</h3>
