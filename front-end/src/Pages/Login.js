@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Header from '../Components/Header';
+import Footer from '../Components/Footer';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -36,45 +38,49 @@ function Login() {
     };
 
     return (
-        <div className="loginpage bg-light" style={loginpagestyle}>
-            <div className="contianer w-100 h-100 d-flex justify-content-center align-items-center flex-column">
-                <form
-                    className="d-flex flex-column justify-content-center"
-                    onSubmit={handleLogin}
-                >
-                    <h2 className="text-center pb-3">Connectez-vous à PrixBanque</h2>
-                    <div className="form-group mb-2">
-                        <label htmlFor="exampleInputEmail1">Adresse mail</label>
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="exampleInputEmail1"
-                            aria-describedby="emailHelp"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
+        <>
+            <Header />
+                <div className="loginpage bg-light" style={loginpagestyle}>
+                    <div className="contianer w-100 h-100 d-flex justify-content-center align-items-center flex-column">
+                        <form
+                            className="d-flex flex-column justify-content-center"
+                            onSubmit={handleLogin}
+                        >
+                            <h2 className="text-center pb-3">Connectez-vous à PrixBanque</h2>
+                            <div className="form-group mb-2">
+                                <label htmlFor="exampleInputEmail1">Adresse mail</label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    id="exampleInputEmail1"
+                                    aria-describedby="emailHelp"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group mb-4">
+                                <label htmlFor="exampleInputPassword1">Mot de passe</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="exampleInputPassword1"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <button type="submit" className="btn btn-primary">
+                                Valider
+                            </button>
+                            <p className="text-center pt-3">
+                                Vous n'avez de un compte ? <Link to="/register">Créez un maintenant</Link>
+                            </p>
+                        </form>
                     </div>
-                    <div className="form-group mb-4">
-                        <label htmlFor="exampleInputPassword1">Mot de passe</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="exampleInputPassword1"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-primary">
-                        Valider
-                    </button>
-                    <p className="text-center pt-3">
-                        Vous n'avez de un compte ? <Link to="/register">Créez un maintenant</Link>
-                    </p>
-                </form>
-            </div>
-        </div>
+                </div>
+            <Footer />
+        </>
     );
 }
 
