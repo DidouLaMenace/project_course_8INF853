@@ -11,8 +11,8 @@
 	<groupId>com.prixbanque</groupId>
 	<artifactId>commande-ms</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>commande-ms</name>
-	<description>Microservice de facturation</description>
+	<name>inventory-ms</name>
+	<description>Microservice d'Inventaire des achats</description>
 	<url/>
 	<licenses>
 		<license/>

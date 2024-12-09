@@ -1,4 +1,4 @@
-package com.prixbanque.commande_ms.model;
+package com.prixbanque.inventory_ms.model;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;

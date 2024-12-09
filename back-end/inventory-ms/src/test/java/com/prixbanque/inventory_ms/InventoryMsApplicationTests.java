@@ -1,10 +1,10 @@
-package com.prixbanque.commande_ms;
+package com.prixbanque.inventory_ms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CommandeMsApplicationTests {
+class InventoryMsApplicationTests {
 
 	@Test
 	void contextLoads() {

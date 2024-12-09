@@ -1,4 +1,4 @@
-package com.prixbanque.commande_ms.model;
+package com.prixbanque.inventory_ms.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,8 +18,8 @@ public class Ticket {
     private Double price;
 
     @ManyToOne
-    @JoinColumn(name = "commande_id")
-    private Commande commande; // La commande associée
+    @JoinColumn(name = "inventory_id")
+    private Inventory Inventory; // La Inventory associée
 
     @Lob
     private byte[] qrCode; // QR code encodé en image (PNG)
