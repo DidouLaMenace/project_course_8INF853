@@ -1,117 +1,108 @@
-import React from 'react'
-import Header from '../Components/Header'
-import Footer from '../Components/Footer'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import Header from '../Components/Header';
+import Footer from '../Components/Footer';
 
-function Catalogue() {
+const Catalogue = () => {
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const API_BASE_URL = 'http://localhost:8083'; // URL de la Gateway
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/catalog/events`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          const errorMessage = await response.text();
+          throw new Error(errorMessage || 'Erreur lors de la récupération des événements.');
+        }
+
+        const data = await response.json();
+        setEvents(data.slice(0, 3)); // Limiter à 3 événements
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) {
+    return <p>Chargement des événements...</p>;
+  }
+
+  if (error) {
+    return <p style={{ color: 'red' }}>{error}</p>;
+  }
+
   return (
-    <>
-      <Header />
-      <div className='cataloguepage'>
-        <div className='catalogueheader'>
-          <h2 className='text-center pt-5'>STORE</h2>
-          <p className='text-center'>TU TROUVES CE QUE TU VOUDRAIS</p>
-        </div>
-        <div className='store'>
-          <div className='container'>
-            <div className='row'>
-              {/*FILTRES*/}
-              <div className='col-3'>
-                <div className='container d-flex flex-column justify-content-center align-items-center'>
-                  <div className="input-group mt-2 mb-3">
-                    <input type="text" className="form-control" placeholder="SAISIR CE QUE TU VEUX" aria-label="Recipient's username" aria-describedby="basic-addon2" />
-                    <span className="input-group-text" id="basic-addon2">CHERCHER</span>
-                  </div>
-                  <select className="form-select mb-3" aria-label="Default select example">
-                    <option selected>Sélection de la choix 1</option>
-                    <option value="1">Choix 1.1</option>
-                    <option value="2">Choix 1.1</option>
-                    <option value="3">Choix 1.1</option>
-                  </select>
-                  <select className="form-select mb-3" aria-label="Default select example">
-                    <option selected>Sélection de la choix 2</option>
-                    <option value="1">Choix 2.1</option>
-                    <option value="2">Choix 2.1</option>
-                    <option value="3">Choix 2.1</option>
-                  </select>
-                  <div className="form-check form-switch mb-3">
-                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                    <label className="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
-                  </div>
-                  <div className="form-check form-switch mb-3">
-                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                    <label className="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
-                  </div>
-                  <div className="form-check form-switch mb-3">
-                    <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" />
-                    <label className="form-check-label" for="flexSwitchCheckDefault">switch checkbox input 1</label>
-                  </div>
-                </div>
-              </div>
-              {/*STORE*/}
-              <div className='col-9'>
-                <div className='row w-100 d-flex justify-content-center mb-3'>
-                  <div className="card col-3 mx-3">
-                    <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title">Nom de spéctacle</h5>
-                      <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                      <Link to="/reservation" className="btn btn-primary">Réserver</Link>
-                    </div>
-                  </div>
-                  <div className="card col-3 mx-3">
-                    <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title">Nom de spéctacle</h5>
-                      <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                      <Link to="/reservation" className="btn btn-primary">Réserver</Link>
-                    </div>
-                  </div>
-                  <div className="card col-3 mx-3">
-                    <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title">Nom de spéctacle</h5>
-                      <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                      <Link to="/reservation" className="btn btn-primary">Réserver</Link>
-                    </div>
-                  </div>
-                </div>
-                <div className='row w-100 d-flex justify-content-center mb-3'>
-                  <div className="card col-3 mx-3">
-                    <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title">Nom de spéctacle</h5>
-                      <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                      <Link to="/reservation" className="btn btn-primary">Réserver</Link>
-                    </div>
-                  </div>
-                  <div className="card col-3 mx-3">
-                    <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title">Nom de spéctacle</h5>
-                      <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                      <Link to="/reservation" className="btn btn-primary">Réserver</Link>
-                    </div>
-                  </div>
-                  <div className="card col-3 mx-3">
-                    <img src="https://placehold.co/600x400" className="card-img-top" alt="..." />
-                    <div className="card-body">
-                      <h5 className="card-title">Nom de spéctacle</h5>
-                      <p className="card-text">Quelques informations à propos  le spéctacle</p>
-                      <Link to="/reservation" className="btn btn-primary">Réserver</Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <>
+        <Header />
+        <div style={{ padding: '20px' }}>
+          <h1>Catalogue des événements</h1>
+          <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+                justifyContent: 'space-between',
+                gap: '10px',
+              }}
+          >
+            {events.map((event) => (
+                <div
+                    key={event.eventId}
+                    style={{
+                      border: '1px solid #ccc',
+                      borderRadius: '10px',
+                      padding: '10px',
+                      width: '30%',
+                    }}
+                >
+                  {event.imageUrls && (
+                      <img
+                          src={event.imageUrls}
+                          alt={event.title}
+                          style={{ width: '100%', borderRadius: '5px' }}
+                      />
+                  )}
+                  <h2>{event.title}</h2>
+                  <p>{event.description}</p>
+                    <p>
+                        <strong>Date :</strong> {new Date(event.dateTime).toLocaleString('fr-FR')}
+                    </p>
 
-            </div>
+                    <p>
+                        <strong>Lieu :</strong> {event.location}
+                    </p>
+                  <button
+                      style={{
+                        marginTop: '10px',
+                        padding: '8px 12px',
+                        backgroundColor: '#4CAF50',
+                        color: '#fff',
+                        border: 'none',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => alert(`Billet pour ${event.title} réservé !`)}
+                  >
+                    Réserver
+                  </button>
+                </div>
+            ))}
           </div>
         </div>
-      </div>
-      <Footer />
-    </>
+        <Footer />
+      </>
+  );
+};
 
-  )
-}
-
-export default Catalogue
+export default Catalogue;
