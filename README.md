@@ -42,6 +42,64 @@ Ce document présente les choix architecturaux, les diagrammes UML, les services
 
 ---
 
+## Instructions d'utilisation
+
+### 1. Prérequis
+
+- Assurez-vous que Java JDK 17 ou une version ultérieure est installée sur votre machine.
+- Installez Maven pour gérer les dépendances des microservices.
+- Vérifiez que MySQL est install´e et configur´e pour accueillir les bases de données nécessaires
+- Assurez-vous que Node.js et npm sont installés sur votre machine
+
+### 2. Installation
+
+1. Clonez le dépôt Git sur votre machine locale :
+   
+```git clone https://github.com/DidouLaMenace/project_course_8INF853.git```
+
+2. Accédez au répertoire du projet :
+
+```cd project_course_8INF853```
+
+3. Rendez-vous dans le dossier contenant le frontend de l’application :
+   
+```cd front-end```
+
+5. Installez les dépendances nécessaires avec npm :
+
+```npm install```
+
+### 3. Exécution
+
+Sur un ordinateur Windows, il est possible d'exécuter le script `start-all.bat` pour lancer tous les microservices, le discovery server, l'API gateway ainsi que le front-end.
+
+Pour lancer le projet manuellement:
+- pour le backend, il faut se déplacer dans chaque sous-répertoire de */back-end* et lancer l'application avec Maven. Par exemple, pour le discovery server:
+
+```
+cd back-end\discovery-server
+mvnw spring-boot:run
+```
+
+- pour le backend, il faut se déplacer dans le sous-répertoire */front-end* et lancer l'application web avec npm:
+
+```
+cd front-end
+npm start
+```
+
+---
+
 ## Guide d'utilisation
 [Regarder la vidéo de démonstration](https://youtu.be/19DNwwrKKgM) pour en savoir plus sur le fonctionnement du projet.
 
+---
+
+## Test de montée en charge (preuve de concept)
+
+> [Regarder la vidéo](https://youtu.be/L_o4C61UN7U) pour voir les résultats de notre test
+
+Nous avons utilisé [Artillery](https://github.com/artilleryio/artillery) pour tester les capacités de l'API.
+Pour reproduire le test, installez Artillery sur votre ordinateur (`npm install -g artillery`), puis lancer un test en utilisant le fichier yml de configuration à la racine du dépôt :
+
+```artillery run reservationLoadTest.yml```
