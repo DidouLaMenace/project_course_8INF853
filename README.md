@@ -41,3 +41,7 @@ L'architecture de cette application repose sur un modèle microservices, conçu 
 Ce document présente les choix architecturaux, les diagrammes UML, les services principaux, et la gestion de la base de données.
 
 ---
+
+## Guide d'utilisation
+[Regarder la vidéo de démonstration](https://youtu.be/19DNwwrKKgM) pour en savoir plus sur le fonctionnement du projet.
+

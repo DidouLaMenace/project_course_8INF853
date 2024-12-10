@@ -9,5 +9,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface BankingClient {
 
     @PostMapping("/accounts/create")
-    ResponseEntity<String> createBankAccount(@RequestParam Long ownerUserId);
+    ResponseEntity<String> createBankAccount(@RequestParam Long userId);
 }
