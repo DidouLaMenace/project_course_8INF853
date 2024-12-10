@@ -2,7 +2,7 @@
 setlocal
 
 REM Liste des chemins vers les répertoires des microservices
-set SERVICES=back-end\discovery-server back-end\gateway back-end\accounts-ms back-end\banking-ms back-end\catalog-ms back-end\inventory-ms back-end\payments-ms back-end\booking-ms
+set SERVICES=back-end\discovery-server back-end\gateway back-end\accounts-ms back-end\banking-ms back-end\catalog-ms back-end\inventory-ms back-end\payments-ms
 
 REM Chemin vers le projet React
 set FRONT_END_PATH=front-end

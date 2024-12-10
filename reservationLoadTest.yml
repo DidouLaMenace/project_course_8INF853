@@ -1,0 +1,29 @@
+# Fichier de configuration pour Artillery
+# exécuter avec 'artillery run reservationLoadTest.yml'
+
+config:
+  target: 'http://localhost:8083' # Remplacer par l'adresse de l'API Gateway
+  phases:
+    - duration: 30
+      arrivalRate: 500
+      name: "Phase 1 - 500 RPS"
+    - duration: 30
+      arrivalRate: 1000
+      name: "Phase 2 - 1000 RPS"
+    - duration: 30
+      arrivalRate: 2000
+      name: "Phase 3 - 2000 RPS"
+    - duration: 30
+      arrivalRate: 10000
+      name: "Phase 4 - 10000 RPS"
+  http:
+    pool: 100
+scenarios:
+  - flow:
+      - post:
+          url: '/inventory/reservations'
+          qs: # Paramètres de la requête
+            userId: 1
+            eventId: 1
+          headers:
+            Content-Type: application/json
