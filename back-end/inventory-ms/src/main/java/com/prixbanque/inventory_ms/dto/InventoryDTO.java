@@ -1,14 +1,14 @@
 package com.prixbanque.inventory_ms.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class InventoryDTO {
     private Long id;
     private Long userId;
-    private LocalDateTime EventDate;
-    private String Name;
+    private Long eventId;
 }

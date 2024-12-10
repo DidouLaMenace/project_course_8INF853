@@ -14,7 +14,9 @@ function Reservation() {
     const API_BASE_URL = 'http://localhost:8083'; // URL de la Gateway
 
     const handleReserveClick = () => {
-        navigate(`/payment/${id}`); // Redirige vers la page de paiement avec l'ID
+        navigate(`/payment/${id}`, {
+            state: { eventId: id }, // Ajouter l'ID de l'événement dans l'état
+        });
     };
 
     useEffect(() => {
@@ -57,16 +59,18 @@ function Reservation() {
             <div className="reservationpage pt-5">
                 <div className="container">
                     <h2 className="text-center">{event.title}</h2>
-                    <img src={event.imageUrls || "https://placehold.co/600x200"} className="card-img-top" alt={event.title} />
+                    <img src={event.imageUrls || "https://placehold.co/600x200"} className="card-img-top"
+                         alt={event.title}/>
                     <p className="text-center mt-2">{event.description}</p>
-                    <p className="text-center mt-2"><strong>Date :</strong> {new Date(event.dateTime).toLocaleString()}</p>
+                    <p className="text-center mt-2"><strong>Date :</strong> {new Date(event.dateTime).toLocaleString()}
+                    </p>
                     <p className="text-center mt-2"><strong>Prix :</strong> {event.ticketPrice}$</p>
                     <div className="text-center">
                         <button onClick={handleReserveClick} className="btn btn-primary">Réserver</button>
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </>
     );
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -62,30 +62,49 @@ const Payment = () => {
 
             // Étape 1: Vérifier le solde via le microservice banking
             const sessionId = Cookies.get('session-id'); // Récupérer la session de l'utilisateur
+
+            const userIdResponse = await axios.get(`${API_BASE_URL}/accounts/session/validate?sessionId=${sessionId}`);
+            const userId = userIdResponse.data;
+
+            // Étape 1 : Vérifier le solde via le microservice banking
             const balanceResponse = await axios.get(`${API_BASE_URL}/banking/balance`, {
                 params: { userId },
                 headers: { 'Session-Id': sessionId },
             });
 
-            const balance = balanceResponse.data; // Le solde récupéré
+            const balance = balanceResponse.data;
             console.log('Solde utilisateur :', balance);
 
             if (balance < totalAmount) {
                 alert('Votre solde est insuffisant pour effectuer ce paiement.');
-                return; // Arrêtez ici si le solde est insuffisant
+                navigate('/add-money'); // Redirige vers la page pour ajouter de l'argent
+                return;
             }
 
             // Étape 2: Si le solde est suffisant, mettez à jour localement et affichez une alerte
             const newBalance = balance - totalAmount;
 
             // Mettre à jour le solde dans la base de données via le microservice banking
-            await axios.put(`${API_BASE_URL}/banking/update-balance`, {
-                userId,
-                newBalance,
+            await axios.put(`${API_BASE_URL}/banking/update-balance`, null, {
+                params: { userId, newBalance },
+                headers: { 'Session-Id': sessionId },
             });
 
-            alert(`Paiement réussi avec votre compte ! Nouveau solde : ${newBalance.toFixed(2)} €`);
-            setBalance(newBalance); // Mettre à jour le solde localement
+            console.log(`Event ID: ${event.eventId}`);
+
+            // Enregistrez la réservation dans Inventory
+            await axios.post(`${API_BASE_URL}/inventory/reservations`, null, {
+                params: {
+                    userId: userId, // ID utilisateur
+                    eventId: event.eventId, // ID de l'événement
+                },
+                headers: {
+                    'Session-Id': sessionId, // ID de session pour authentification
+                },
+            });
+
+            alert(`Paiement réussi ! Nouveau solde : ${newBalance.toFixed(2)} €`);
+            navigate('/dashboard'); // Redirection vers le tableau de bord
         } catch (error) {
             console.error('Erreur lors du traitement du paiement :', error);
             alert('Une erreur est survenue lors du paiement.');
@@ -122,9 +141,10 @@ const Payment = () => {
                                     value={ticketQuantity}
                                     onChange={handleTicketQuantityChange}
                                     className="form-control"
-                                    style={{ width: '80px' }}
+                                    style={{width: '80px'}}
                                 />
-                                <p className="mt-3"><strong>Prix total :</strong> {(event.ticketPrice * ticketQuantity).toFixed(2)} €</p>
+                                <p className="mt-3"><strong>Prix total
+                                    :</strong> {(event.ticketPrice * ticketQuantity).toFixed(2)} €</p>
                             </div>
                         </div>
                     </div>

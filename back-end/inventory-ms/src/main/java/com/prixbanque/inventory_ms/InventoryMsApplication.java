@@ -6,8 +6,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableFeignClients
-@EnableJpaRepositories(basePackages = "com.prixbanque.inventory_ms.repository")
-@EntityScan(basePackages = "com.prixbanque.inventory_ms.model")
 public class InventoryMsApplication {
 
 	public static void main(String[] args) {

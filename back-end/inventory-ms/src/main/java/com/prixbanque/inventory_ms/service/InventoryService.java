@@ -1,5 +1,6 @@
 package com.prixbanque.inventory_ms.service;
 
+import com.prixbanque.inventory_ms.dto.InventoryDTO;
 import com.prixbanque.inventory_ms.model.Inventory;
 import com.prixbanque.inventory_ms.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,33 +14,22 @@ public class InventoryService {
     @Autowired
     private InventoryRepository inventoryRepository;
 
-    // Récupérer toutes les réservations
-    public List<Inventory> getAllInventories() {
-        return inventoryRepository.findAll();
+    public Inventory saveReservation(Long userId, Long eventId) {
+        // Créer une nouvelle instance de l'entité Inventory
+        Inventory inventory = new Inventory();
+        inventory.setUserId(userId);
+        inventory.setEventId(eventId);
+
+        // Enregistrer la réservation dans la base de données via le repository
+        Inventory savedReservation = inventoryRepository.save(inventory);
+
+        // Retourner la réservation sauvegardée
+        return savedReservation;
     }
 
-    // Récupérer une réservation par ID
-    public Inventory getInventoryById(Long id) {
-        return inventoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Inventory non trouvée pour l'ID : " + id));
-    }
 
-    // Créer une nouvelle réservation
-    public Inventory createInventory(Inventory inventory) {
-        return inventoryRepository.save(inventory);
-    }
-
-    // Supprimer une réservation par ID
-    public void deleteInventory(Long id) {
-        if (!inventoryRepository.existsById(id)) {
-            throw new RuntimeException("Inventory non trouvée pour l'ID : " + id);
-        }
-        inventoryRepository.deleteById(id);
-    }
-
-    // Récupérer les réservations par userId
-    public List<Inventory> getInventoriesByUserId(Long userId) {
+    // Récupérer toutes les réservations pour un utilisateur
+    public List<Inventory> getReservationsByUserId(Long userId) {
         return inventoryRepository.findByUserId(userId);
     }
-
 }

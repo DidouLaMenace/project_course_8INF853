@@ -9,27 +9,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "reservation")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Inventory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotNull
     @Column
     private Long userId; // Identifiant de l'utilisateur ayant passé la Inventory
 
-    @NotBlank
+    @NotNull
     @Column
-    private LocalDateTime EventDate;
-
-    @NotBlank
-    @Column
-    private String Name;
+    private Long eventId;
 }
