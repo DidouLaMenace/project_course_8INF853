@@ -91,8 +91,40 @@ function Dashboard() {
                 setReservations([]);
             }
         };
+        //fetchReservations();
 
-        fetchReservations();
+        const fetchReservationsWithEventDetails = async () => {
+            try {
+                const sessionId = Cookies.get('session-id');
+                if (!sessionId) {
+                    setError('Utilisateur non connecté');
+                    return;
+                }
+
+                // Étape 1: Récupérer les réservations de l'utilisateur depuis Inventory
+                const inventoryResponse = await axios.get(`${API_BASE_URL}/inventory/user/${userId}`, {
+                    headers: { 'Session-Id': sessionId },
+                });
+
+                const reservations = inventoryResponse.data; // Liste des réservations avec eventId et userId
+
+                // Étape 2: Récupérer les détails de chaque événement depuis Catalog
+                const eventDetailsPromises = reservations.map(async (reservation) => {
+                    const catalogResponse = await axios.get(`${API_BASE_URL}/catalog/events/${reservation.eventId}`);
+                    return { ...reservation, ...catalogResponse.data }; // Fusionner les détails de l'événement avec la réservation
+                });
+
+                const detailedReservations = await Promise.all(eventDetailsPromises);
+                setReservations(detailedReservations);
+            } catch (err) {
+                console.error('Erreur lors de la récupération des réservations et des détails des événements :', err);
+                setReservations([]);
+            }
+        };
+
+        if (userId) {
+            fetchReservationsWithEventDetails();
+        }
     }, [userId]);
 
     return (
@@ -139,9 +171,12 @@ function Dashboard() {
                                 reservations.map((reservation, index) => (
                                     <tr key={reservation.id}>
                                         <th scope='row'>{index + 1}</th>
-                                        <td>{reservation.eventName}</td>
-                                        <td>{new Date(reservation.eventDate).toLocaleDateString()}</td>
-                                        <td>{reservation.price} €</td>
+                                        <td>{reservation.title}</td>
+                                        {/* Nom de l'événement */}
+                                        <td>{new Date(reservation.dateTime).toLocaleDateString()}</td>
+                                        {/* Date de l'événement */}
+                                        <td>{reservation.ticketPrice} €</td>
+                                        {/* Prix du billet */}
                                         <td>
                                             <button className='btn btn-primary'>Modifier</button>
                                         </td>
@@ -153,7 +188,7 @@ function Dashboard() {
                             ) : (
                                 <tr>
                                     <td colSpan='6' className='text-center'>
-                                        Aucun réservation trouvée.
+                                        Aucune réservation trouvée.
                                     </td>
                                 </tr>
                             )}
@@ -162,7 +197,7 @@ function Dashboard() {
                     </div>
                 </div>
             </div>
-            <Footer />
+            <Footer/>
         </>
     );
 }
